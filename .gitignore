@@ -1,41 +1,52 @@
-# Prerequisites
-*.d
+# === ОС ===
+# macOS служебные файлы
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# Compiled Object files
-*.slo
-*.lo
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === IDE/редакторы ===
+# VS Code
+.vscode/
+
+# CLion/IntelliJ IDEA
+.idea/
+*.iml
+
+# === CMake ===
+# Папки сборки
+build/
+cmake-build-*/
+
+# Файлы CMake кеша
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+# === Компиляторы и бинарники ===
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
+*.lo
+*.la
+*.al
+*.libs
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
 *.exe
 *.out
 *.app
+*.a
+*.lib
 
-# debug information files
-*.dwo
+# === Логи и временные файлы ===
+*.log
+*.tmp
+*.swp
+*.swo
