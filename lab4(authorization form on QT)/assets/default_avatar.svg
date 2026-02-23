@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .background { fill: #e8e8e8; }
+      .circle { fill: #999999; }
+      .user-icon { fill: #ffffff; }
+    </style>
+  </defs>
+  <!-- Background -->
+  <rect class="background" width="150" height="150"/>
+  <!-- Head circle -->
+  <circle class="circle" cx="75" cy="50" r="25"/>
+  <!-- Body oval -->
+  <ellipse class="circle" cx="75" cy="100" rx="35" ry="40"/>
+</svg>
