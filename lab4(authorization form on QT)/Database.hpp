@@ -1,9 +1,8 @@
 #pragma once
-
 #include <vector>
 #include <string>
 #include <fstream>
-#include <sstream>
+#include <cctype>
 #include "User.hpp"
 #include "PasswordEncryption.hpp"
 
@@ -19,49 +18,56 @@ private:
 
         std::string line;
         while (std::getline(file, line)) {
-            if (line.empty()) continue;
-            std::stringstream ss(line);
-            std::string username, email, hash;
-            if (std::getline(ss, username, '|') && 
-                std::getline(ss, email, '|') && 
-                std::getline(ss, hash, '|')) {
-                users.emplace_back(username, email, hash);
+            size_t pos = line.find('|');
+            if (pos != std::string::npos) {
+                users.emplace_back(
+                    line.substr(0, pos),
+                    line.substr(pos + 1)
+                );
             }
         }
-        file.close();
     }
 
-    bool saveToFile() {
+    void saveToFile() const {
         std::ofstream file(filePath);
-        if (!file) return false;
         for (const auto& u : users) {
-            file << u.username << "|" << u.email << "|" << u.passwordHash << "\n";
+            file << u.username << "|" << u.passwordHash << "\n";
         }
-        file.close();
-        return true;
+    }
+
+    bool isValidUsername(const std::string& u) const {
+        return u.length() >= 3 && u.length() <= 20;
+    }
+
+
+
+    bool isValidPassword(const std::string& p) const {
+        if (p.length() < 6) return false;
+        bool hasLetter = false, hasDigit = false;
+        for (char c : p) {
+            if (std::isalpha(c)) hasLetter = true;
+            if (std::isdigit(c)) hasDigit = true;
+        }
+        return hasLetter && hasDigit;
     }
 
 public:
+    enum class RegResult { SUCCESS, USERNAME_EXISTS, INVALID_DATA };
+
     Database(const std::string& path = "users.db") : filePath(path) {
         loadFromFile();
     }
 
-    enum class RegResult { SUCCESS, USERNAME_EXISTS, EMAIL_EXISTS, INVALID_USERNAME, INVALID_EMAIL, INVALID_PASSWORD };
-
-    RegResult registerUser(const std::string& username, const std::string& email, const std::string& password) {
-        if (!User::isValidUsername(username)) return RegResult::INVALID_USERNAME;
-        if (!User::isValidEmail(email)) return RegResult::INVALID_EMAIL;
-        if (!User::isValidPassword(password)) return RegResult::INVALID_PASSWORD;
+    RegResult registerUser(const std::string& username, const std::string& password) {
+        if (!isValidUsername(username) || !isValidPassword(password)) {
+            return RegResult::INVALID_DATA;
+        }
 
         for (const auto& u : users) {
             if (u.username == username) return RegResult::USERNAME_EXISTS;
-            if (u.email == email) return RegResult::EMAIL_EXISTS;
         }
 
-        std::string hash = PasswordEncryption::hashPassword(password);
-        if (hash.empty()) return RegResult::SUCCESS;
-
-        users.emplace_back(username, email, hash);
+        users.emplace_back(username, PasswordEncryption::hashPassword(password));
         saveToFile();
         return RegResult::SUCCESS;
     }

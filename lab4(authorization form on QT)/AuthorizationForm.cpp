@@ -1,235 +1,206 @@
 #include "AuthorizationForm.hpp"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QWidget>
 #include <QMessageBox>
 #include "Logger.hpp"
 
 AuthorizationForm::AuthorizationForm(QWidget* parent)
     : QMainWindow(parent), database("users.db") {
     
-    Logger::info("Authorization Form initialized");
+    Logger::info("Application started");
     
     QWidget* central = new QWidget(this);
     stacked = new QStackedWidget(central);
-    
-    QVBoxLayout* layout = new QVBoxLayout(central);
-    layout->addWidget(stacked);
-    layout->setContentsMargins(0, 0, 0, 0);
+    QVBoxLayout* mainLayout = new QVBoxLayout(central);
+    mainLayout->addWidget(stacked);
     setCentralWidget(central);
     
     setupUI();
     stacked->setCurrentIndex(0);
     
     setWindowTitle("Authorization");
-    setGeometry(100, 100, 500, 350);
+    setGeometry(100, 100, 350, 300);
+    setFixedSize(350, 300);
 }
 
 void AuthorizationForm::setupUI() {
-    // ===== LOGIN FORM =====
-    QWidget* loginW = new QWidget();
-    QVBoxLayout* loginL = new QVBoxLayout(loginW);
+    QWidget* authWidget = new QWidget();
+    QVBoxLayout* authLayout = new QVBoxLayout(authWidget);
     
-    QLabel* loginTitle = new QLabel("Login");
-    loginTitle->setStyleSheet("font-size: 18px; font-weight: bold;");
-    loginL->addWidget(loginTitle);
+    errorLabel = new QLabel();
+    errorLabel->setStyleSheet("color: red; font-weight: bold;");
+    authLayout->addWidget(errorLabel);
     
-    loginL->addWidget(new QLabel("Username:"));
-    loginUser = new QLineEdit();
-    loginUser->setPlaceholderText("Enter username");
-    loginL->addWidget(loginUser);
+    authLayout->addWidget(new QLabel("Username:"));
+    userInput = new QLineEdit();
+    authLayout->addWidget(userInput);
     
-    loginL->addWidget(new QLabel("Password:"));
-    loginPass = new QLineEdit();
-    loginPass->setPlaceholderText("Enter password");
-    loginPass->setEchoMode(QLineEdit::Password);
-    loginL->addWidget(loginPass);
+    authLayout->addWidget(new QLabel("Password:"));
+    passInput = new QLineEdit();
+    passInput->setEchoMode(QLineEdit::Password);
+    authLayout->addWidget(passInput);
     
-    loginError = new QLabel("");
-    loginError->setStyleSheet("color: red;");
-    loginL->addWidget(loginError);
+    confirmLabel = new QLabel("Confirm Password:");
+    confirmLabel->hide();
+    authLayout->addWidget(confirmLabel);
+    passConfirmInput = new QLineEdit();
+    passConfirmInput->setEchoMode(QLineEdit::Password);
+    passConfirmInput->hide();
+    authLayout->addWidget(passConfirmInput);
     
-    QHBoxLayout* btnL = new QHBoxLayout();
-    btnLogin = new QPushButton("Login");
-    btnToReg = new QPushButton("Register");
-    connect(btnLogin, &QPushButton::clicked, this, &AuthorizationForm::handleLogin);
-    connect(btnToReg, &QPushButton::clicked, this, &AuthorizationForm::showRegistrationForm);
-    btnL->addWidget(btnLogin);
-    btnL->addWidget(btnToReg);
+    actionBtn = new QPushButton("Login");
+    switchBtn = new QPushButton("Switch to Register");
     
-    loginL->addLayout(btnL);
-    loginL->addStretch();
-    stacked->addWidget(loginW);
+    QHBoxLayout* btnLayout = new QHBoxLayout();
+    btnLayout->addWidget(actionBtn);
+    btnLayout->addWidget(switchBtn);
+    authLayout->addLayout(btnLayout);
+    authLayout->addStretch();
     
-    // ===== REGISTRATION FORM =====
-    QWidget* regW = new QWidget();
-    QVBoxLayout* regL = new QVBoxLayout(regW);
+    connect(actionBtn, &QPushButton::clicked, this, &AuthorizationForm::handleLogin);
+    connect(switchBtn, &QPushButton::clicked, this, &AuthorizationForm::switchMode);
     
-    QLabel* regTitle = new QLabel("Register");
-    regTitle->setStyleSheet("font-size: 18px; font-weight: bold;");
-    regL->addWidget(regTitle);
+    stacked->addWidget(authWidget);
     
-    regL->addWidget(new QLabel("Username (3-20 chars):"));
-    regUser = new QLineEdit();
-    regUser->setPlaceholderText("Username");
-    regL->addWidget(regUser);
+    QWidget* menuWidget = new QWidget();
+    QVBoxLayout* menuLayout = new QVBoxLayout(menuWidget);
     
-    regL->addWidget(new QLabel("Email:"));
-    regEmail = new QLineEdit();
-    regEmail->setPlaceholderText("Email");
-    regL->addWidget(regEmail);
+    QLabel* avatarLabel = new QLabel();
+    avatarLabel->setAlignment(Qt::AlignCenter);
+    avatarLabel->setStyleSheet("background-color: #4CAF50; color: white; font-size: 48px; font-weight: bold; border-radius: 10px;");
+    avatarLabel->setFixedSize(100, 100);
+    avatarLabel->setText("👤");
+    menuLayout->addWidget(avatarLabel, 0, Qt::AlignCenter);
     
-    regL->addWidget(new QLabel("Password (min 6, letters + digits):"));
-    regPass = new QLineEdit();
-    regPass->setPlaceholderText("Password");
-    regPass->setEchoMode(QLineEdit::Password);
-    regL->addWidget(regPass);
+    infoLabel = new QLabel();
+    infoLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #7B1FA2; text-align: center;");
+    infoLabel->setAlignment(Qt::AlignCenter);
+    menuLayout->addWidget(infoLabel);
+    menuLayout->addStretch();
     
-    regL->addWidget(new QLabel("Confirm:"));
-    regConfirm = new QLineEdit();
-    regConfirm->setPlaceholderText("Confirm password");
-    regConfirm->setEchoMode(QLineEdit::Password);
-    regL->addWidget(regConfirm);
+    logoutBtn = new QPushButton("Logout");
+    menuLayout->addWidget(logoutBtn);
     
-    regError = new QLabel("");
-    regError->setStyleSheet("color: red;");
-    regL->addWidget(regError);
+    connect(logoutBtn, &QPushButton::clicked, this, &AuthorizationForm::handleLogout);
     
-    QHBoxLayout* regBtnL = new QHBoxLayout();
-    btnRegister = new QPushButton("Register");
-    btnToLogin = new QPushButton("Back");
-    connect(btnRegister, &QPushButton::clicked, this, &AuthorizationForm::handleRegister);
-    connect(btnToLogin, &QPushButton::clicked, this, &AuthorizationForm::showLoginForm);
-    regBtnL->addWidget(btnRegister);
-    regBtnL->addWidget(btnToLogin);
-    
-    regL->addLayout(regBtnL);
-    regL->addStretch();
-    stacked->addWidget(regW);
-    
-    // ===== MAIN MENU =====
-    QWidget* menuW = new QWidget();
-    QVBoxLayout* menuL = new QVBoxLayout(menuW);
-    
-    menuWelcome = new QLabel("Welcome!");
-    menuWelcome->setStyleSheet("font-size: 18px; font-weight: bold;");
-    menuL->addWidget(menuWelcome);
-    
-    menuInfo = new QLabel("");
-    menuInfo->setStyleSheet("font-size: 14px; margin: 20px 0;");
-    menuL->addWidget(menuInfo);
-    
-    menuL->addStretch();
-    btnLogout = new QPushButton("Logout");
-    connect(btnLogout, &QPushButton::clicked, this, &AuthorizationForm::handleLogout);
-    menuL->addWidget(btnLogout);
-    
-    stacked->addWidget(menuW);
+    stacked->addWidget(menuWidget);
 }
 
 void AuthorizationForm::handleLogin() {
-    QString user = loginUser->text();
-    QString pass = loginPass->text();
+    QString user = userInput->text();
+    QString pass = passInput->text();
     
     if (user.isEmpty() || pass.isEmpty()) {
-        Logger::warning("Login attempt with empty fields");
-        showError("Fill all fields");
+        showError("Fill all fields!");
         return;
     }
     
+    // Check if user exists
+    const User* u = database.getUser(user.toStdString());
+    if (!u) {
+        Logger::warning("Login failed: user doesn't exist");
+        showError("User doesn't exist!");
+        return;
+    }
+    
+    // Check password
     if (database.loginUser(user.toStdString(), pass.toStdString())) {
-        Logger::info("User login successful: " + user.toStdString());
+        Logger::info("User logged in: " + user.toStdString());
         currentUser = user;
-        menuWelcome->setText("Welcome, " + user + "!");
         
-        const User* u = database.getUser(currentUser.toStdString());
-        if (u) {
-            menuInfo->setText("Username: " + QString::fromStdString(u->username) +
-                            "\nEmail: " + QString::fromStdString(u->email));
-        }
-        
-        clearInputs();
-        stacked->setCurrentIndex(2);
+        infoLabel->setText("Welcome, " + QString::fromStdString(u->username) + "!");
+        clearFields();
+        stacked->setCurrentIndex(1);
     } else {
-        Logger::warning("Login failed: invalid credentials for " + user.toStdString());
-        showError("Invalid username or password");
+        Logger::warning("Login failed: wrong password");
+        showError("Wrong password!");
     }
 }
 
 void AuthorizationForm::handleRegister() {
-    QString user = regUser->text();
-    QString email = regEmail->text();
-    QString pass = regPass->text();
-    QString confirm = regConfirm->text();
+    QString user = userInput->text();
+    QString pass = passInput->text();
+    QString confirm = passConfirmInput->text();
     
-    if (user.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-        showError("Fill all fields");
+    if (user.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
+        showError("Fill all fields!");
         return;
     }
     
     if (pass != confirm) {
-        showError("Passwords don't match");
+        showError("Passwords don't match!");
         return;
     }
     
-    auto result = database.registerUser(user.toStdString(), email.toStdString(), pass.toStdString());
+    Database::RegResult result = database.registerUser(
+        user.toStdString(), pass.toStdString()
+    );
     
     switch (result) {
         case Database::RegResult::SUCCESS:
-            Logger::info("User registered successfully: " + user.toStdString());
-            QMessageBox::information(this, "Success", "Registration successful!");
-            clearInputs();
-            showLoginForm();
+            Logger::info("User registered: " + user.toStdString());
+            showSuccess("Registration successful!");
+            switchMode();
             break;
         case Database::RegResult::USERNAME_EXISTS:
-            showError("Username already exists");
+            Logger::warning("Registration failed: username exists");
+            showError("Username already exists!");
             break;
-        case Database::RegResult::EMAIL_EXISTS:
-            showError("Email already exists");
+        case Database::RegResult::INVALID_DATA:
+            Logger::warning("Registration failed: invalid data");
+            showError("Invalid username or password!");
             break;
-        case Database::RegResult::INVALID_USERNAME:
-            showError("Invalid username");
-            break;
-        case Database::RegResult::INVALID_EMAIL:
-            showError("Invalid email");
-            break;
-        case Database::RegResult::INVALID_PASSWORD:
-            showError("Password too weak");
-            break;
+    }
+}
+
+void AuthorizationForm::switchMode() {
+    isLoginMode = !isLoginMode;
+    errorLabel->clear();
+    clearFields();
+    
+    if (isLoginMode) {
+        confirmLabel->hide();
+        passConfirmInput->hide();
+        actionBtn->setText("Login");
+        switchBtn->setText("Switch to Register");
+        disconnect(actionBtn, nullptr, this, nullptr);
+        connect(actionBtn, &QPushButton::clicked, this, &AuthorizationForm::handleLogin);
+    } else {
+        confirmLabel->show();
+        passConfirmInput->show();
+        actionBtn->setText("Register");
+        switchBtn->setText("Back to Login");
+        disconnect(actionBtn, nullptr, this, nullptr);
+        connect(actionBtn, &QPushButton::clicked, this, &AuthorizationForm::handleRegister);
     }
 }
 
 void AuthorizationForm::handleLogout() {
-    Logger::info("User logged out");
+    Logger::info("User logged out: " + currentUser.toStdString());
     currentUser.clear();
-    clearInputs();
+    clearFields();
+    isLoginMode = true;
     stacked->setCurrentIndex(0);
-    QMessageBox::information(this, "Logout", "Logged out successfully");
+    actionBtn->setText("Login");
+    switchBtn->setText("Switch to Register");
+    confirmLabel->hide();
+    passConfirmInput->hide();
+    disconnect(actionBtn, nullptr, this, nullptr);
+    connect(actionBtn, &QPushButton::clicked, this, &AuthorizationForm::handleLogin);
+    QMessageBox::information(this, "Logout", "Logged out successfully!");
 }
 
-void AuthorizationForm::showLoginForm() {
-    clearInputs();
-    stacked->setCurrentIndex(0);
+void AuthorizationForm::showError(const QString& msg) {
+    errorLabel->setText(msg);
 }
 
-void AuthorizationForm::showRegistrationForm() {
-    clearInputs();
-    stacked->setCurrentIndex(1);
+void AuthorizationForm::showSuccess(const QString& msg) {
+    QMessageBox::information(this, "Success", msg);
 }
 
-void AuthorizationForm::showError(const QString& message) {
-    regError->setText(message);
-    loginError->setText(message);
-}
-
-void AuthorizationForm::clearInputs() {
-    loginUser->clear();
-    loginPass->clear();
-    loginError->setText("");
-    
-    regUser->clear();
-    regEmail->clear();
-    regPass->clear();
-    regConfirm->clear();
-    regError->setText("");
+void AuthorizationForm::clearFields() {
+    userInput->clear();
+    passInput->clear();
+    passConfirmInput->clear();
+    errorLabel->clear();
 }
