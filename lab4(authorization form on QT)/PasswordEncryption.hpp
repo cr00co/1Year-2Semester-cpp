@@ -20,7 +20,6 @@ public:
         return ss.str();
     }
 
-    // Проверка пароля против хеша
     static bool verifyPassword(const std::string& password, const std::string& hash) {
         return hashPassword(password) == hash;
     }
