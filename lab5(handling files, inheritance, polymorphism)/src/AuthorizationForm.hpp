@@ -8,9 +8,6 @@
 
 class MainWindow;
 
-// Taken from lab4 almost unchanged.
-// Only difference: after successful login/register opens MainWindow
-// instead of the old static menu widget.
 class AuthorizationForm : public QMainWindow {
     Q_OBJECT
 public:
