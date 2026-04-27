@@ -1,0 +1,322 @@
+[
+  {
+    "id": 1,
+    "name": "Молоко Добрынинское",
+    "value": 10,
+    "price": 89.99,
+    "category": "dairy",
+    "expiration_date": "2026-04-12"
+  },
+  {
+    "id": 2,
+    "name": "Молоко Добрынинское",
+    "value": 5,
+    "price": 85.50,
+    "category": "dairy",
+    "expiration_date": "2026-04-07"
+  },
+  {
+    "id": 3,
+    "name": "Хлеб Бородинский",
+    "value": 20,
+    "price": 45.00,
+    "category": "bakery",
+    "expiration_date": "2026-04-11"
+  },
+  {
+    "id": 4,
+    "name": "Яблоки Гренни Смит",
+    "value": 50,
+    "price": 120.00,
+    "category": "fruits",
+    "expiration_date": "2026-04-20"
+  },
+  {
+    "id": 5,
+    "name": "Яблоки Гренни Смит",
+    "value": 30,
+    "price": 115.00,
+    "category": "fruits",
+    "expiration_date": "2026-04-05"
+  },
+  {
+    "id": 6,
+    "name": "Говядина",
+    "value": 15,
+    "price": 599.99,
+    "category": "meat",
+    "expiration_date": "2026-04-15"
+  },
+  {
+    "id": 7,
+    "name": "Сыр Российский",
+    "value": 12,
+    "price": 349.90,
+    "category": "dairy",
+    "expiration_date": "2026-04-18"
+  },
+  {
+    "id": 8,
+    "name": "Шампунь CleanLine",
+    "value": 25,
+    "price": 199.99,
+    "category": "non-food",
+    "expiration_date": "2030-01-01"
+  },
+  {
+    "id": 9,
+    "name": "Шампунь CleanLine",
+    "value": 10,
+    "price": 189.99,
+    "category": "non-food",
+    "expiration_date": "2030-01-01"
+  },
+  {
+    "id": 10,
+    "name": "Курица",
+    "value": 40,
+    "price": 279.50,
+    "category": "meat",
+    "expiration_date": "2026-04-09"
+  },
+  {
+    "id": 11,
+    "name": "Масло сливочное",
+    "value": 8,
+    "price": 210.00,
+    "category": "dairy",
+    "expiration_date": "2026-04-25"
+  },
+  {
+    "id": 12,
+    "name": "Масло сливочное",
+    "value": 12,
+    "price": 199.00,
+    "category": "dairy",
+    "expiration_date": "2026-04-02"
+  },
+  {
+    "id": 13,
+    "name": "Бананы",
+    "value": 35,
+    "price": 95.50,
+    "category": "fruits",
+    "expiration_date": "2026-04-14"
+  },
+  {
+    "id": 14,
+    "name": "Бананы",
+    "value": 25,
+    "price": 89.90,
+    "category": "fruits",
+    "expiration_date": "2026-04-08"
+  },
+  {
+    "id": 15,
+    "name": "Бананы",
+    "value": 15,
+    "price": 99.00,
+    "category": "fruits",
+    "expiration_date": "2026-04-22"
+  },
+  {
+    "id": 16,
+    "name": "Свинина",
+    "value": 22,
+    "price": 449.00,
+    "category": "meat",
+    "expiration_date": "2026-04-10"
+  },
+  {
+    "id": 17,
+    "name": "Свинина",
+    "value": 18,
+    "price": 429.00,
+    "category": "meat",
+    "expiration_date": "2026-04-03"
+  },
+  {
+    "id": 18,
+    "name": "Кефир",
+    "value": 14,
+    "price": 75.00,
+    "category": "dairy",
+    "expiration_date": "2026-04-13"
+  },
+  {
+    "id": 19,
+    "name": "Творог",
+    "value": 6,
+    "price": 180.00,
+    "category": "dairy",
+    "expiration_date": "2026-04-19"
+  },
+  {
+    "id": 20,
+    "name": "Творог",
+    "value": 9,
+    "price": 170.50,
+    "category": "dairy",
+    "expiration_date": "2026-04-01"
+  },
+  {
+    "id": 21,
+    "name": "Гречка",
+    "value": 30,
+    "price": 110.00,
+    "category": "groceries",
+    "expiration_date": "2027-01-01"
+  },
+  {
+    "id": 22,
+    "name": "Рис",
+    "value": 28,
+    "price": 120.00,
+    "category": "groceries",
+    "expiration_date": "2027-02-15"
+  },
+  {
+    "id": 23,
+    "name": "Макароны",
+    "value": 40,
+    "price": 70.00,
+    "category": "groceries",
+    "expiration_date": "2027-06-01"
+  },
+  {
+    "id": 24,
+    "name": "Макароны",
+    "value": 35,
+    "price": 65.50,
+    "category": "groceries",
+    "expiration_date": "2027-05-20"
+  },
+  {
+    "id": 25,
+    "name": "Шоколад Алёнка",
+    "value": 50,
+    "price": 89.00,
+    "category": "sweets",
+    "expiration_date": "2026-07-01"
+  },
+  {
+    "id": 26,
+    "name": "Шоколад Алёнка",
+    "value": 45,
+    "price": 85.00,
+    "category": "sweets",
+    "expiration_date": "2026-08-12"
+  },
+  {
+    "id": 27,
+    "name": "Печенье Юбилейное",
+    "value": 60,
+    "price": 120.00,
+    "category": "sweets",
+    "expiration_date": "2026-09-01"
+  },
+  {
+    "id": 28,
+    "name": "Вода минеральная",
+    "value": 100,
+    "price": 45.00,
+    "category": "drinks",
+    "expiration_date": "2026-10-10"
+  },
+  {
+    "id": 29,
+    "name": "Вода минеральная",
+    "value": 80,
+    "price": 42.00,
+    "category": "drinks",
+    "expiration_date": "2026-04-09"
+  },
+  {
+    "id": 30,
+    "name": "Сок апельсиновый",
+    "value": 25,
+    "price": 130.00,
+    "category": "drinks",
+    "expiration_date": "2026-05-05"
+  },
+  {
+    "id": 31,
+    "name": "Пиво светлое",
+    "value": 48,
+    "price": 89.00,
+    "category": "alcohol",
+    "expiration_date": "2026-08-20"
+  },
+  {
+    "id": 32,
+    "name": "Пиво светлое",
+    "value": 52,
+    "price": 95.00,
+    "category": "alcohol",
+    "expiration_date": "2026-07-30"
+  },
+  {
+    "id": 33,
+    "name": "Вино красное",
+    "value": 12,
+    "price": 699.00,
+    "category": "alcohol",
+    "expiration_date": "2027-12-31"
+  },
+  {
+    "id": 34,
+    "name": "Конфеты Рафаэлло",
+    "value": 20,
+    "price": 450.00,
+    "category": "sweets",
+    "expiration_date": "2026-11-01"
+  },
+  {
+    "id": 35,
+    "name": "Зубная паста Colgate",
+    "value": 70,
+    "price": 159.00,
+    "category": "non-food",
+    "expiration_date": "2028-06-01"
+  },
+  {
+    "id": 36,
+    "name": "Мыло Dove",
+    "value": 90,
+    "price": 75.00,
+    "category": "non-food",
+    "expiration_date": "2027-09-15"
+  },
+  {
+    "id": 37,
+    "name": "Мыло Dove",
+    "value": 60,
+    "price": 70.00,
+    "category": "non-food",
+    "expiration_date": "2027-09-15"
+  },
+  {
+    "id": 38,
+    "name": "Стиральный порошок",
+    "value": 15,
+    "price": 399.00,
+    "category": "non-food",
+    "expiration_date": "2029-01-01"
+  },
+  {
+    "id": 39,
+    "name": "Салфетки влажные",
+    "value": 200,
+    "price": 59.00,
+    "category": "non-food",
+    "expiration_date": "2028-03-01"
+  },
+  {
+    "id": 40,
+    "name": "Огурцы свежие",
+    "value": 18,
+    "price": 140.00,
+    "category": "vegetables",
+    "expiration_date": "2026-04-08"
+  }
+]

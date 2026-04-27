@@ -1,0 +1,202 @@
+[
+  {
+    "category": "fruits",
+    "expiration_date": "2026-04-20",
+    "id": 4,
+    "name": "ЯблОкИ ГрЕннИ СмИт",
+    "price": 120.0,
+    "value": 50
+  },
+  {
+    "category": "dairy",
+    "expiration_date": "2026-04-18",
+    "id": 7,
+    "name": "СЫр РОссИйскИй",
+    "price": 349.9,
+    "value": 12
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2030-01-01",
+    "id": 8,
+    "name": "ШАмпУнь ClEAnLInE",
+    "price": 199.99,
+    "value": 25
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2030-01-01",
+    "id": 9,
+    "name": "ШАмпУнь ClEAnLInE",
+    "price": 189.99,
+    "value": 10
+  },
+  {
+    "category": "dairy",
+    "expiration_date": "2026-04-25",
+    "id": 11,
+    "name": "МАслО слИвОчнОЕ",
+    "price": 210.0,
+    "value": 8
+  },
+  {
+    "category": "fruits",
+    "expiration_date": "2026-04-22",
+    "id": 15,
+    "name": "БАнАнЫ",
+    "price": 99.0,
+    "value": 15
+  },
+  {
+    "category": "dairy",
+    "expiration_date": "2026-04-19",
+    "id": 19,
+    "name": "ТвОрОг",
+    "price": 180.0,
+    "value": 6
+  },
+  {
+    "category": "groceries",
+    "expiration_date": "2027-01-01",
+    "id": 21,
+    "name": "ГрЕчкА",
+    "price": 110.0,
+    "value": 30
+  },
+  {
+    "category": "groceries",
+    "expiration_date": "2027-02-15",
+    "id": 22,
+    "name": "РИс",
+    "price": 120.0,
+    "value": 28
+  },
+  {
+    "category": "groceries",
+    "expiration_date": "2027-06-01",
+    "id": 23,
+    "name": "МАкАрОнЫ",
+    "price": 70.0,
+    "value": 40
+  },
+  {
+    "category": "groceries",
+    "expiration_date": "2027-05-20",
+    "id": 24,
+    "name": "МАкАрОнЫ",
+    "price": 65.5,
+    "value": 35
+  },
+  {
+    "category": "sweets",
+    "expiration_date": "2026-07-01",
+    "id": 25,
+    "name": "ШОкОлАд АлЁнкА",
+    "price": 89.0,
+    "value": 50
+  },
+  {
+    "category": "sweets",
+    "expiration_date": "2026-08-12",
+    "id": 26,
+    "name": "ШОкОлАд АлЁнкА",
+    "price": 85.0,
+    "value": 45
+  },
+  {
+    "category": "sweets",
+    "expiration_date": "2026-09-01",
+    "id": 27,
+    "name": "ПЕчЕньЕ ЮбИлЕйнОЕ",
+    "price": 120.0,
+    "value": 60
+  },
+  {
+    "category": "drinks",
+    "expiration_date": "2026-10-10",
+    "id": 28,
+    "name": "ВОдА мИнЕрАльнАЯ",
+    "price": 45.0,
+    "value": 100
+  },
+  {
+    "category": "drinks",
+    "expiration_date": "2026-05-05",
+    "id": 30,
+    "name": "СОк АпЕльсИнОвЫй",
+    "price": 130.0,
+    "value": 25
+  },
+  {
+    "category": "alcohol",
+    "expiration_date": "2026-08-20",
+    "id": 31,
+    "name": "ПИвО свЕтлОЕ",
+    "price": 89.0,
+    "value": 48
+  },
+  {
+    "category": "alcohol",
+    "expiration_date": "2026-07-30",
+    "id": 32,
+    "name": "ПИвО свЕтлОЕ",
+    "price": 95.0,
+    "value": 52
+  },
+  {
+    "category": "alcohol",
+    "expiration_date": "2027-12-31",
+    "id": 33,
+    "name": "ВИнО крАснОЕ",
+    "price": 699.0,
+    "value": 12
+  },
+  {
+    "category": "sweets",
+    "expiration_date": "2026-11-01",
+    "id": 34,
+    "name": "КОнфЕтЫ РАфАЭллО",
+    "price": 450.0,
+    "value": 20
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2028-06-01",
+    "id": 35,
+    "name": "ЗУбнАЯ пАстА COlgAtE",
+    "price": 159.0,
+    "value": 70
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2027-09-15",
+    "id": 36,
+    "name": "МЫлО DOvE",
+    "price": 75.0,
+    "value": 90
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2027-09-15",
+    "id": 37,
+    "name": "МЫлО DOvE",
+    "price": 70.0,
+    "value": 60
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2029-01-01",
+    "id": 38,
+    "name": "СтИрАльнЫй пОрОшОк",
+    "price": 399.0,
+    "value": 15
+  },
+  {
+    "category": "non-food",
+    "expiration_date": "2028-03-01",
+    "id": 39,
+    "name": "САлфЕткИ влАжнЫЕ",
+    "price": 59.0,
+    "value": 200
+  }
+]
