@@ -4,6 +4,7 @@
 #include <fstream>
 #include <stdexcept>
 
+// 1-st RAII class (открывает файл при создании, закрывает при уничтожении)
 class FileGuard {
 public:
     explicit FileGuard(const std::string& path, std::ios::openmode mode = std::ios::in) {

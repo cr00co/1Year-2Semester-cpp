@@ -31,7 +31,7 @@ void AuthorizationForm::setupUI() {
     errorLabel->setStyleSheet("color: red; font-weight: bold;");
     authLayout->addWidget(errorLabel);
     
-    authLayout->addWidget(new QLabel("Username:"));
+    authLayout->addWidget(new QLabel("Login:"));
     userInput = new QLineEdit();
     authLayout->addWidget(userInput);
     
@@ -48,7 +48,7 @@ void AuthorizationForm::setupUI() {
     passConfirmInput->hide();
     authLayout->addWidget(passConfirmInput);
     
-    actionBtn = new QPushButton("Login");
+    actionBtn = new QPushButton("Auth");
     switchBtn = new QPushButton("Switch to Register");
     
     QHBoxLayout* btnLayout = new QHBoxLayout();
@@ -65,17 +65,17 @@ void AuthorizationForm::setupUI() {
     QWidget* menuWidget = new QWidget();
     QVBoxLayout* menuLayout = new QVBoxLayout(menuWidget);
     
+    infoLabel = new QLabel();
+    infoLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #7B1FA2; text-align: center;");
+    infoLabel->setAlignment(Qt::AlignCenter);
+    menuLayout->addWidget(infoLabel);
+
     QLabel* avatarLabel = new QLabel();
     avatarLabel->setAlignment(Qt::AlignCenter);
     avatarLabel->setStyleSheet("background-color: #4CAF50; color: white; font-size: 48px; font-weight: bold; border-radius: 10px;");
     avatarLabel->setFixedSize(100, 100);
     avatarLabel->setText("👤");
     menuLayout->addWidget(avatarLabel, 0, Qt::AlignCenter);
-    
-    infoLabel = new QLabel();
-    infoLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #7B1FA2; text-align: center;");
-    infoLabel->setAlignment(Qt::AlignCenter);
-    menuLayout->addWidget(infoLabel);
     menuLayout->addStretch();
     
     logoutBtn = new QPushButton("Logout");
@@ -87,6 +87,8 @@ void AuthorizationForm::setupUI() {
 }
 
 void AuthorizationForm::handleLogin() {
+    showError("");
+
     QString user = userInput->text();
     QString pass = passInput->text();
     
@@ -98,7 +100,7 @@ void AuthorizationForm::handleLogin() {
     // Check if user exists
     const User* u = database.getUser(user.toStdString());
     if (!u) {
-        Logger::warning("Login failed: user doesn't exist");
+        Logger::warning("Auth failed: user doesn't exist");
         showError("User doesn't exist!");
         return;
     }
@@ -108,16 +110,18 @@ void AuthorizationForm::handleLogin() {
         Logger::info("User logged in: " + user.toStdString());
         currentUser = user;
         
-        infoLabel->setText("Welcome, " + QString::fromStdString(u->username) + "!");
+        infoLabel->setText("Добро пожаловать, " + QString::fromStdString(u->username) + "!");
         clearFields();
         stacked->setCurrentIndex(1);
     } else {
-        Logger::warning("Login failed: wrong password");
+        Logger::warning("Auth failed: wrong password");
         showError("Wrong password!");
     }
 }
 
 void AuthorizationForm::handleRegister() {
+    showError("");
+
     QString user = userInput->text();
     QString pass = passInput->text();
     QString confirm = passConfirmInput->text();
@@ -129,6 +133,27 @@ void AuthorizationForm::handleRegister() {
     
     if (pass != confirm) {
         showError("Passwords don't match!");
+        return;
+    }
+
+    if (user.length() < 3 || user.length() > 20) {
+        showError("Login must be 3-20 characters long!");
+        return;
+    }
+    
+    if (pass.length() < 6) {
+        showError("Password must be at least 6 characters!");
+        return;
+    }
+    
+    bool hasLetter = false, hasDigit = false;
+    for (QChar c : pass) {
+        if (c.isLetter()) hasLetter = true;
+        if (c.isDigit()) hasDigit = true;
+    }
+    
+    if (!hasLetter || !hasDigit) {
+        showError("Password must contain both letters and digits!");
         return;
     }
     
@@ -161,7 +186,7 @@ void AuthorizationForm::switchMode() {
     if (isLoginMode) {
         confirmLabel->hide();
         passConfirmInput->hide();
-        actionBtn->setText("Login");
+        actionBtn->setText("Auth");
         switchBtn->setText("Switch to Register");
         disconnect(actionBtn, nullptr, this, nullptr);
         connect(actionBtn, &QPushButton::clicked, this, &AuthorizationForm::handleLogin);
@@ -169,7 +194,7 @@ void AuthorizationForm::switchMode() {
         confirmLabel->show();
         passConfirmInput->show();
         actionBtn->setText("Register");
-        switchBtn->setText("Back to Login");
+        switchBtn->setText("Back to Auth");
         disconnect(actionBtn, nullptr, this, nullptr);
         connect(actionBtn, &QPushButton::clicked, this, &AuthorizationForm::handleRegister);
     }
@@ -181,7 +206,7 @@ void AuthorizationForm::handleLogout() {
     clearFields();
     isLoginMode = true;
     stacked->setCurrentIndex(0);
-    actionBtn->setText("Login");
+    actionBtn->setText("Auth");
     switchBtn->setText("Switch to Register");
     confirmLabel->hide();
     passConfirmInput->hide();

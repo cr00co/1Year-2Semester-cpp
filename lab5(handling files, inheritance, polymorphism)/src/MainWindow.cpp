@@ -131,7 +131,6 @@ void MainWindow::onChoose() {
 
 void MainWindow::refreshAvatar() {
     if (!m_user->avatar.isEmpty() && QFileInfo::exists(m_user->avatar)) {
-        // setScaledContents(true) fills the square automatically
         m_avatarLabel->setPixmap(QPixmap(m_user->avatar));
     } else {
         m_avatarLabel->setPixmap(makePlaceholder(140));

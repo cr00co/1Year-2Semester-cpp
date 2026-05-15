@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 
+// 2-nd RAII class (запоминает время при создании, выводит сколько прошло при уничтожении)
 class TimerGuard {
 public:
     explicit TimerGuard(const std::string& label)

@@ -30,7 +30,7 @@ class UserFileHandler : public FileHandler {
 public:
     explicit UserFileHandler(const QString& path) : FileHandler(path) {}
 
-    bool load() override {
+    bool load() {
         m_users.clear();
         QFile file(m_path);
         if (!file.exists()) return true;
@@ -99,13 +99,13 @@ public:
     QList<User>& users() { return m_users; }
 
 private:
-    QList<User> m_users;
+    QList<User> m_users; // Encapsulation
 };
 
 // -------------------------------------------------------------
 // PhotoFileHandler - copies and deletes files in photos/ folder
 // -------------------------------------------------------------
-class PhotoFileHandler : public FileHandler {
+class PhotoFileHandler : public FileHandler { // Inheritance
 public:
     explicit PhotoFileHandler(const QString& dir) : FileHandler(dir) {}
 

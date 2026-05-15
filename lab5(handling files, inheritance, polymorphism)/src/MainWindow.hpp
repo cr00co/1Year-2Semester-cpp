@@ -22,14 +22,13 @@ private:
     void refreshAvatar();
     void setStatus(const QString& msg, bool ok);
 
-    // Draws a simple person SVG as avatar placeholder
     QPixmap makePlaceholder(int size);
 
     User*             m_user;
     UserFileHandler*  m_ufh;
     PhotoFileHandler* m_pfh;
 
-    // Polymorphic operations
+    // Polymorphism
     std::unique_ptr<PhotoOperation> m_upload;
     std::unique_ptr<PhotoOperation> m_choose;
 

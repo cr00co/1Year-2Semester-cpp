@@ -9,7 +9,7 @@
 
 class Processor {
 public:
-    static std::vector<std::shared_ptr<Product>>
+    static std::vector<std::shared_ptr<Product>> // 🤓☝️ pointer хранит products в векторе
     run(const std::vector<std::shared_ptr<Product>>& products, const std::string& today)
     {
         std::vector<std::shared_ptr<Product>> result;
@@ -30,7 +30,7 @@ public:
 
 private:
     static bool isFresh(const std::string& expDate, const std::string& today) {
-        return expDate >= today;
+        return expDate > today;
     }
 
     static std::string uppercaseVowels(const std::string& name) {
@@ -54,7 +54,6 @@ private:
                     else { i += 2; }
                 } else { i++; }
             } else if (byte < 0x80) {
-                // Single-byte ASCII character (English vowels)
                 if (vowels.find(result[i]) != std::string::npos) {
                     result[i] = static_cast<char>(std::toupper(static_cast<unsigned char>(result[i])));
                 }

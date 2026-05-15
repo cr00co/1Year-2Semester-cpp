@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 
+// Делает 4 шага: загрузка, фильтрация, сохранение, вывод
 class Facade {
 public:
     explicit Facade(const std::string& inputPath, const std::string& outputPath)
@@ -40,15 +41,15 @@ private:
     std::string m_inputPath;
     std::string m_outputPath;
 
-    std::vector<std::shared_ptr<Product>> loadProducts() {
+    std::vector<std::shared_ptr<Product>> loadProducts() { 
         FileGuard file(m_inputPath);
 
         nlohmann::json j;
         file.stream() >> j;
 
-        std::vector<std::shared_ptr<Product>> products;
+        std::vector<std::shared_ptr<Product>> products; // 🤓☝️ pointer хранит products в векторе
         for (const auto& item : j) {
-            products.push_back(ProductFactory::create(item));
+            products.push_back(ProductFactory::create(item)); // Создается product
         }
         return products;
     }

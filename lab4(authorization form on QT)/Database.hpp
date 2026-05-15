@@ -39,8 +39,6 @@ private:
         return u.length() >= 3 && u.length() <= 20;
     }
 
-
-
     bool isValidPassword(const std::string& p) const {
         if (p.length() < 6) return false;
         bool hasLetter = false, hasDigit = false;

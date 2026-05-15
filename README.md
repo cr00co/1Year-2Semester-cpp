@@ -1,1 +1,0 @@
-# Learning programming basics

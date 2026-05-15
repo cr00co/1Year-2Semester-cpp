@@ -3,8 +3,6 @@
 #include <QString>
 #include <QStringList>
 
-// From lab4: username + passwordHash
-// Added in lab5: avatar (path to avatar) + photos (list of photo paths)
 struct User {
     QString     username;
     QString     passwordHash;

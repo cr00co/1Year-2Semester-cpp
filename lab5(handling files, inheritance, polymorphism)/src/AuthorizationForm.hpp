@@ -32,7 +32,6 @@ private:
     QString         currentUser;
     bool            isLoginMode = true;
 
-    // Widgets — same names as in lab4
     QLineEdit   *userInput, *passInput, *passConfirmInput;
     QPushButton *actionBtn, *switchBtn;
     QLabel      *errorLabel, *confirmLabel;

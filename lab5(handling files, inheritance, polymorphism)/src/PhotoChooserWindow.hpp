@@ -12,10 +12,6 @@
 #include "FileHandlers.hpp"
 #include "PhotoOperations.hpp"
 
-// Window opened by the "choose" button in MainWindow.
-// Shows a thumbnail grid with "set avatar" and "delete" buttons.
-// No Q_OBJECT - class is header-only, moc won't process it.
-// Uses std::function callback instead of a signal.
 class PhotoChooserWindow : public QDialog {
 public:
     // onChanged is called whenever photos or avatar are modified

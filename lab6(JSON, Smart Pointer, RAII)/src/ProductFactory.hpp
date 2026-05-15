@@ -5,7 +5,7 @@
 
 class ProductFactory {
 public:
-    static std::unique_ptr<Product> create(const nlohmann::json& j) {
+    static std::unique_ptr<Product> create(const nlohmann::json& j) { // 🤓☝️ pointer создает product
         auto p = std::make_unique<Product>();
         p->id              = j.at("id").get<int>();
         p->name            = j.at("name").get<std::string>();
