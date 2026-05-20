@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QList>
 #include <QString>
 #include <QStringList>
 
@@ -28,8 +29,8 @@ private slots:
 
 private:
     QNetworkAccessManager* m_manager;
-    QStringList m_quotes;
+    QList<Quote> m_quotes;
 
-    QStringList parseQuotesFromHtml(const QString& html);
+    QList<Quote> parseQuotesFromHtml(const QString& html);
     Quote pickRandomQuote();
 };

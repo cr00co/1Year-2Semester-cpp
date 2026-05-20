@@ -28,6 +28,8 @@ private:
 
     QLabel*       m_quoteLabel;
     QLabel*       m_authorLabel;
+    QLabel*       m_tagsLabel;
     QPushButton*  m_fetchBtn;
     QProgressBar* m_progressBar;
+    QWidget* m_quoteBox;
 };

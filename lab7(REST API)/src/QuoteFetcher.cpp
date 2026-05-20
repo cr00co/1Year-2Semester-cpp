@@ -4,15 +4,10 @@
 #include <QUrl>
 #include <QRegularExpression>
 #include <QRandomGenerator>
+#include <QTextDocument>
 
-static const QString SOURCE_URL = "https://citaty.info/selection/citaty-stethema";
+static const QString SOURCE_URL = "https://quotes.toscrape.com/";
 
-
-static const QStringList SECTION_HEADINGS = {
-    "Жизненные цитаты Стэтхема",
-    "Псевдофилософские цитаты Стэтхэма",
-    "Настоящий цитатник Джейсона Стэтхэма"
-};
 
 QuoteFetcher::QuoteFetcher(QObject* parent)
     : QObject(parent)
@@ -48,33 +43,55 @@ void QuoteFetcher::onReplyFinished(QNetworkReply* reply) {
     emit quoteReady(pickRandomQuote());
 }
 
-QStringList QuoteFetcher::parseQuotesFromHtml(const QString& html) {
-    QStringList result;
+QList<Quote> QuoteFetcher::parseQuotesFromHtml(const QString& html) {
+    QList<Quote> result;
 
-    QRegularExpression blockquoteRe(
-        "<blockquote[^>]*>(.*?)</blockquote>",
+    QRegularExpression quoteRe(
+        "<div[^>]*class=\"quote\"[^>]*>.*?"
+        "<span[^>]*class=\"text\"[^>]*>(.*?)</span>.*?"
+        "<small[^>]*class=\"author\"[^>]*>(.*?)</small>.*?"
+        "<div[^>]*class=\"tags\"[^>]*>(.*?)</div>.*?</div>",
         QRegularExpression::DotMatchesEverythingOption |
         QRegularExpression::CaseInsensitiveOption
     );
 
-    QRegularExpression tagRe("<[^>]+>");
+    QRegularExpression tagRe("<a[^>]*class=\"tag\"[^>]*>(.*?)</a>",
+                             QRegularExpression::DotMatchesEverythingOption |
+                             QRegularExpression::CaseInsensitiveOption);
 
-    auto it = blockquoteRe.globalMatch(html);
+    auto it = quoteRe.globalMatch(html);
     while (it.hasNext()) {
         auto match = it.next();
-        QString content = match.captured(1);
-        content.remove(tagRe);
-        content = content.trimmed();
+        QString textHtml  = match.captured(1).trimmed();
+        QString authorHtml = match.captured(2).trimmed();
+        QString tagsHtml  = match.captured(3);
 
-        if (content.isEmpty()) continue;
+        QTextDocument textDoc;
+        textDoc.setHtml(textHtml);
+        const QString text = textDoc.toPlainText().trimmed();
 
-        const QStringList lines = content.split('\n', Qt::SkipEmptyParts);
-        for (const QString& line : lines) {
-            const QString trimmed = line.trimmed();
-            if (trimmed.isEmpty()) continue;
-            if (SECTION_HEADINGS.contains(trimmed)) continue;
-            result << trimmed;
+        QTextDocument authorDoc;
+        authorDoc.setHtml(authorHtml);
+        QString author = authorDoc.toPlainText().trimmed();
+
+        QStringList tags;
+        auto tagIt = tagRe.globalMatch(tagsHtml);
+        while (tagIt.hasNext()) {
+            auto tagMatch = tagIt.next();
+            const QString tagText = tagMatch.captured(1).trimmed();
+            if (!tagText.isEmpty()) {
+                tags << tagText;
+            }
         }
+
+        if (text.isEmpty()) continue;
+        if (author.isEmpty()) author = "Неизвестный автор";
+
+        Quote quote;
+        quote.text = text;
+        quote.author = author;
+        quote.tags = tags.join(", ");
+        result << quote;
     }
 
     return result;
@@ -82,10 +99,5 @@ QStringList QuoteFetcher::parseQuotesFromHtml(const QString& html) {
 
 Quote QuoteFetcher::pickRandomQuote() {
     const int idx = QRandomGenerator::global()->bounded(m_quotes.size());
-
-    Quote q;
-    q.text   = m_quotes.at(idx);
-    q.author = "Анатолий Пушкарский";
-    q.tags   = "юмор, жизнь, философия";
-    return q;
+    return m_quotes.at(idx);
 }

@@ -9,9 +9,9 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , m_fetcher(new QuoteFetcher(this))
 {
-    setWindowTitle("Рандомные цитаты");
-    setMinimumSize(600, 420);
-    resize(700, 480);
+    setWindowTitle("Quotes Generator");
+    setMinimumSize(700, 420);
+    resize(850, 480);
 
     if (QScreen* screen = QApplication::primaryScreen()) {
         const QRect sg = screen->availableGeometry();
@@ -35,25 +35,41 @@ void MainWindow::buildUi() {
     root->setContentsMargins(48, 36, 48, 32);
     root->setSpacing(0);
 
-    QLabel* title = new QLabel("Рандомные цитаты", this);
+    QLabel* title = new QLabel("Генератор Цитат", this);
     title->setObjectName("title");
     title->setAlignment(Qt::AlignCenter);
     root->addWidget(title);
 
-    root->addSpacing(132);
+    root->addSpacing(100);
 
-    m_quoteLabel = new QLabel("Нажмите кнопку, чтобы получить цитату", this);
+    m_quoteBox = new QWidget(this);
+    m_quoteBox->setObjectName("quoteBox");
+    m_quoteBox->hide();
+
+    QVBoxLayout* quoteLayout = new QVBoxLayout(m_quoteBox);
+    quoteLayout->setContentsMargins(16, 12, 16, 12);
+
+    m_quoteLabel = new QLabel("", this);
     m_quoteLabel->setObjectName("quoteLabel");
     m_quoteLabel->setWordWrap(true);
     m_quoteLabel->setAlignment(Qt::AlignCenter);
-    root->addWidget(m_quoteLabel, 1);
+    quoteLayout->addWidget(m_quoteLabel);
+
+    root->addWidget(m_quoteBox);
+
+    root->addSpacing(16);
 
     m_authorLabel = new QLabel("", this);
     m_authorLabel->setObjectName("authorLabel");
-    m_authorLabel->setAlignment(Qt::AlignCenter);
+    m_authorLabel->setAlignment(Qt::AlignLeft);
     root->addWidget(m_authorLabel);
 
-    root->addSpacing(115);
+    m_tagsLabel = new QLabel("", this);
+    m_tagsLabel->setObjectName("tagsLabel");
+    m_tagsLabel->setAlignment(Qt::AlignLeft);
+    root->addWidget(m_tagsLabel);
+
+    root->addStretch(1);
 
     m_progressBar = new QProgressBar(this);
     m_progressBar->setObjectName("progressBar");
@@ -65,7 +81,7 @@ void MainWindow::buildUi() {
 
     root->addSpacing(10);
 
-    m_fetchBtn = new QPushButton("Получить цитату", this);
+    m_fetchBtn = new QPushButton("Нажмите, чтобы получить цитату", this);
     m_fetchBtn->setObjectName("fetchBtn");
     m_fetchBtn->setFixedHeight(50);
     m_fetchBtn->setCursor(Qt::PointingHandCursor);
@@ -90,14 +106,17 @@ void MainWindow::applyStyles() {
         QLabel#quoteLabel {
             font-size: 18px;
             color: #cbd5e1;
-            padding: 0 16px;
         }
 
         QLabel#authorLabel {
             font-size: 14px;
             color: #f8fafc;
-            padding: 0 16px;
             font-style: italic;
+        }
+
+        QLabel#tagsLabel {
+            font-size: 12px;
+            color: #c7d2fe;
         }
 
         QPushButton#fetchBtn {
@@ -132,6 +151,15 @@ void MainWindow::applyStyles() {
             background-color: #6366f1;
             border-radius: 2px;
         }
+
+        QWidget#quoteBox {
+            background-color: #4f46e5;
+            border-radius: 10px;
+        }
+
+        QWidget#quoteBox QLabel {
+            background-color: transparent;
+        }
     )");
 
     QFont appFont("Segoe UI", 11);
@@ -142,20 +170,29 @@ void MainWindow::applyStyles() {
 
 void MainWindow::onFetchClicked() {
     setLoading(true);
+    m_quoteBox->show();
     m_quoteLabel->setText("Загружаем…");
+    m_quoteLabel->setAlignment(Qt::AlignCenter);
+    m_authorLabel->setText("");
+    m_tagsLabel->setText("");
+    m_fetchBtn->setText("Получить цитату");
     m_fetcher->fetchQuotes();
 }
 
 void MainWindow::onQuoteReady(const Quote& quote) {
     setLoading(false);
-    m_quoteLabel->setText("«" + quote.text + "»");
+    m_quoteLabel->setText(quote.text);
+    m_quoteLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_authorLabel->setText("— " + quote.author);
+    m_tagsLabel->setText(quote.tags.isEmpty() ? QString() : "Tags: " + quote.tags);
 }
 
 void MainWindow::onError(const QString& message) {
     setLoading(false);
     m_quoteLabel->setText("⚠️  " + message);
+    m_quoteLabel->setAlignment(Qt::AlignCenter);
     m_authorLabel->setText("");
+    m_tagsLabel->setText("");
 }
 
 void MainWindow::setLoading(bool loading) {
