@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QProgressBar>
 
-#include "QuoteFetcher.h"
+#include "QuoteClient.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -24,7 +24,7 @@ private:
     void applyStyles();
     void setLoading(bool loading);
 
-    QuoteFetcher* m_fetcher;
+    QuoteClient* m_client;
 
     QLabel*       m_quoteLabel;
     QLabel*       m_authorLabel;

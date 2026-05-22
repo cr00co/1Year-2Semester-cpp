@@ -7,7 +7,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
-    , m_fetcher(new QuoteFetcher(this))
+    , m_client(new QuoteClient(this))
 {
     setWindowTitle("Quotes Generator");
     setMinimumSize(700, 420);
@@ -21,8 +21,8 @@ MainWindow::MainWindow(QWidget* parent)
     buildUi();
     applyStyles();
 
-    connect(m_fetcher, &QuoteFetcher::quoteReady,    this, &MainWindow::onQuoteReady);
-    connect(m_fetcher, &QuoteFetcher::errorOccurred, this, &MainWindow::onError);
+    connect(m_client, &QuoteClient::quoteReceived, this, &MainWindow::onQuoteReady);
+    connect(m_client, &QuoteClient::errorOccurred, this, &MainWindow::onError);
     connect(m_fetchBtn, &QPushButton::clicked,        this, &MainWindow::onFetchClicked);
 }
 
@@ -35,7 +35,7 @@ void MainWindow::buildUi() {
     root->setContentsMargins(48, 36, 48, 32);
     root->setSpacing(0);
 
-    QLabel* title = new QLabel("Генератор Цитат", this);
+    QLabel* title = new QLabel("Генератор Цитат☝️👴", this);
     title->setObjectName("title");
     title->setAlignment(Qt::AlignCenter);
     root->addWidget(title);
@@ -176,7 +176,7 @@ void MainWindow::onFetchClicked() {
     m_authorLabel->setText("");
     m_tagsLabel->setText("");
     m_fetchBtn->setText("Получить цитату");
-    m_fetcher->fetchQuotes();
+    m_client->fetchRandomQuote();
 }
 
 void MainWindow::onQuoteReady(const Quote& quote) {

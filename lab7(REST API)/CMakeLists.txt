@@ -13,8 +13,8 @@ add_executable(QuoteApp
     src/main.cpp
     src/MainWindow.cpp
     src/MainWindow.h
-    src/QuoteFetcher.cpp
-    src/QuoteFetcher.h
+    src/QuoteClient.cpp
+    src/QuoteClient.h
 )
 
 target_link_libraries(QuoteApp PRIVATE
